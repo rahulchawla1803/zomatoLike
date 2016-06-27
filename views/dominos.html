@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    li{
+        background-color: grey;
+        list-style-type: none;
+        margin:10;
+        padding: 10px 10px;
+        width:350;
+        height:50;
+    }
+
+</style>
+
+<head>
+    <meta charset="UTF-8">
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+<body>
+<h2>Order List</h2>
+<ul id="placed">
+
+</ul>
+<br><hr><br>
+<h2>Order pending? Accept/Reject!!!</h2>
+<ul id="ulOrder">
+
+</ul>
+
+<script type="text/javascript">
+    $(function() {
+        var $ulOrder=$('#ulOrder');
+        var $placed=$('#placed');
+
+        //var arr=[];
+        // var arr2=[];
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:3000/api/dominos',
+            dataType: 'json',
+            success: function(data) {
+                for (i = 0; i < data.length; i++) {
+                    $ulOrder.append('<br><li><strong>ID</strong>: '+ data[i]._id+'<br><strong>Address</strong>: '+ data[i].address+'<br>' +
+                            '<strong>Order</strong>: '+ data[i].order+'<br><strong>Time</strong>: '+data[i].time+'<br>' +
+                            '<br><button class="accept" id="accept" data-id="'+data[i]._id+'">Accept</button>' +
+                            '&nbsp;&nbsp;&nbsp;&nbsp;<button class="reject" id="reject" data-id="'+data[i]._id+'">X</button></li>');
+
+                    //arr[i]={"_id":data[i]._id, "address":data[i].address,"order":data[i].order, "time":data[i].time};
+
+                }}
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:3000/api/dominosPlaced',
+            dataType: 'json',
+            success: function(data) {
+                for (i = 0; i < data.length; i++) {
+                    $placed.append('<br><li><strong>ID</strong>: '+ data[i]._id+'<br><strong>Address</strong>: '+ data[i].address+'<br>' +
+                            '<strong>Order</strong>: '+ data[i].order+'<br><strong>Time</strong>: '+data[i].time+'<br></li>');
+
+
+                }}
+        });
+
+        $(document).on('click', '#reject', function(){
+            var id = {"_id": $(this).attr('data-id')};
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:3000/api/dominosReject',
+                data : JSON.stringify(id),
+                dataType: "text",
+                success: function (data) {
+
+                    console.log('Delivered');
+                    setTimeout(function(){
+                        location.reload();
+                    }, 200);
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                }
+            });
+
+        });
+
+        $(document).on('click', '#accept', function(){
+
+
+            var id = {"_id": $(this).attr('data-id')};
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:3000/api/dominosAccept',
+                data : JSON.stringify(id),
+                dataType: "text",
+                success: function (data) {
+
+                    console.log('Delivered');
+
+                    setTimeout(function(){
+                        location.reload();
+                    }, 200);
+
+
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                }
+            });
+
+        });
+
+
+
+    });
+
+</script>
+</body>
+</html>

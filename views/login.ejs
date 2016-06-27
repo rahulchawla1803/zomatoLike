@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LOGIN</title>
+</head>
+<body>
+<h1>LOGIN via FACEBOOK only</h1>
+<button onclick="login()"><img src='images/fb.jpg'  height="100" width="300"></img></button>
+<!-- img src="E:\zomatoLike\public\images\fb.jpg"  won't work-->
+<script>
+    //Initialize and setup facebook js sdk
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '496926387161628',
+            xfbml      : true,
+            cookie     : true,
+            version    : 'v2.6'
+        });
+    //window.fbAsyncInit will run initially
+    //Thus you can add any function you want to make it run after the FB.init(), example the FB.getLoginStatus()
+        FB.getLoginStatus(function(response){
+            if(response.status === 'connected'){
+                document.getElementById('status1').innerHTML="Status: the user is logged into Facebook and has authenticated your application";
+            }
+            else if(response.status==='not_authorized'){
+                document.getElementById('status1').innerHTML="Status: the user is logged into Facebook but has not authenticated your application";
+            }
+            else{
+                document.getElementById('status1').innerHTML="Status: the user is either not logged into Facebook or explicitly logged out of your application";
+            }
+        });
+    };
+
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    function login()
+    {
+       FB.login(function (response) {
+           if(response.status === 'connected'){
+               document.getElementById('status2').innerHTML="Status: the user is logged into Facebook and has authenticated your application";
+           }
+           else if(response.status==='not_authorized'){
+               document.getElementById('status2').innerHTML="Status: the user is logged into Facebook but has not authenticated your application";
+           }
+           else{
+               document.getElementById('status2').innerHTML="Status: the user is either not logged into Facebook or explicitly logged out of your application";
+           }
+
+           FB.api('/me', function(res) {
+               document.getElementById('status3').innerHTML="User ID:"+response.authResponse.userID+" NAME:"+res.name;
+           });
+           //document.getElementById('status2').innerHTML="User ID:"+response.authResponse.userID;
+
+       });
+    }
+</script>
+<div id="status1"></div>
+<br>
+<div id="status2"></div>
+<br>
+<div id="status3"></div>
+<form action="/home">
+    <input type="submit" value="PROCEED"/>
+</form>
+</body>
+</html>

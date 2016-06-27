@@ -1,0 +1,25 @@
+<html>
+<body>
+<%- include header.ejs %>
+<form action="/order">
+    <input type="submit" value="Place an order" style="width:300px;height:50px;"/>
+</form>
+<form id="form3">
+    <input type="submit" onclick="show()" value="Address Book" style="width:300px;height:50px;"/>
+    <input type="hidden" id="usID" name="usID"></input>
+</form>
+<form action="/orderStatus">
+    <input type="submit" value="Order Status" style="width:300px;height:50px;"/>
+</form>
+<script>
+    function show()
+    {
+        var userID=document.getElementById('userID').innerHTML;
+        document.getElementById('usID').value=userID;
+
+        document.getElementById('form3').action = "/address";
+        document.getElementById('form3').submit();
+    }
+</script>
+</body>
+</html>

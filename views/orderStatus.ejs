@@ -1,0 +1,19 @@
+<html>
+<body>
+<h1>
+    Orders
+</h1>
+<ul>
+<%for(i=0;i<docs.length;i++){%>
+   <br> <li>
+        <strong>Order Id:</strong><%=docs[i]._id%><br>
+        <strong>Restaurant:</strong><%=docs[i].restaurant%><br>
+        <strong>Order:</strong><%=docs[i].order%><br>
+        <strong>Delivery Address:</strong><%=docs[i].address%><br>
+        <strong>Order placement time:</strong><%=docs[i].time%><br>
+        <strong>Status:</strong><%=docs[i].status%><br>
+    </li><hr>
+<%}%>
+    </ul>
+</body>
+</html>

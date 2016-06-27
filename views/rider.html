@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" type="text/css" src="stylesheets/orderList.css"/>
+<head>
+    <meta charset="UTF-8">
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+<body>
+<h2>Orders to be delivered!</h2>
+<ul id="ulOrder">
+
+</ul>
+
+<script type="text/javascript">
+    $(function() {
+
+        var $ulOrder = $('#ulOrder');
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:3000/api/rider',
+            dataType: 'json',
+            success: function (data) {
+                for (i = 0; i < data.length; i++) {
+                    $ulOrder.append('<li><strong>ID</strong>: ' + data[i]._id + '<br><strong>Restaurant</strong>: ' + data[i].restaurant + '<br>' +
+                            '<strong>Address</strong>: ' + data[i].address + '<br>' +
+                            '<strong>Order</strong>: ' + data[i].order + '<br><strong>Time</strong>: ' + data[i].time + '<br>' +
+                            '<br><button class="delivered" id="delivered" data-id="' + data[i]._id + '">Delivered</button></li><hr>');
+
+                }
+            }
+        });
+
+        $(document).on('click', '#delivered', function(){
+
+
+            var id = {"_id": $(this).attr('data-id')};
+
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:3000/api/delivered',
+                data : JSON.stringify(id),
+                dataType: "text",
+                success: function (data) {
+
+                    console.log('Delivered');
+                    setTimeout(function(){
+                        location.reload();
+                    }, 200);
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                }
+            });
+
+        });
+
+    });
+</script>
+</body>
+</html>

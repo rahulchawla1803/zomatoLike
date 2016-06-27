@@ -1,0 +1,31 @@
+<html>
+<body>
+<%- include header.ejs %>
+<h1>Place your order here</h1>
+<form id="form4">
+    Select a restaurant
+    <select name="rest">
+        <option>McDonalds</option>
+        <option>KFC</option>
+        <option>Dominos</option>
+    </select>
+    <br><br><br><br>
+    Enter your order here
+    <br>
+    <textarea name="order" rows="10" cols="50" ></textarea>
+    <br><br>
+    <input type="hidden" id="usID" name="usID"></input>
+    <input type="submit" onclick="place()" value="Proceed"/>
+</form>
+<script>
+    function place()
+    {
+        var userID=document.getElementById('userID').innerHTML;
+        document.getElementById('usID').value=userID;
+        document.getElementById('form4').action="/orderSubmit";
+        document.getElementById('form4').submit();
+
+    }
+</script>
+</body>
+</html>

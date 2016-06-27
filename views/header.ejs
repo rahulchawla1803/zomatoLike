@@ -1,0 +1,60 @@
+<style>
+    .hide {display:none}
+</style>
+<script>
+    //Initialize and setup facebook js sdk
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '496926387161628',
+            xfbml      : true,
+            cookie     : true,
+            version    : 'v2.6'
+        });
+        //window.fbAsyncInit will run initially
+        //Thus you can add any function you want to make it run after the FB.init(), example the FB.getLoginStatus()
+        FB.getLoginStatus(function(response){
+            if(response.status === 'connected'){
+                document.getElementById('status').innerHTML="Status: the user is logged into Facebook and has authenticated your application";
+            }
+            else if(response.status==='not_authorized'){
+                document.getElementById('status').innerHTML="Status: the user is logged into Facebook but has not authenticated your application";
+            }
+            else{
+                document.getElementById('status').innerHTML="Status: the user is either not logged into Facebook or explicitly logged out of your application";
+            }
+            FB.api('/me', function(res) {
+                document.getElementById('username').innerHTML="Welcome, "+res.name+"!!!";
+                document.getElementById('usern').innerHTML=res.name;
+            });
+            document.getElementById('userID').innerHTML=response.authResponse.userID;
+        });
+
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    function logout() {
+        FB.logout(function (response) {
+            document.getElementById('status').innerHTML = "Status: " + response.status;
+        });
+
+        document.getElementById('form1').action = "/";
+        document.getElementById('form1').submit();
+    }
+</script>
+<div id="status" style="background-color:#454545; padding:1% 0 1% 0; color: white;"></div>
+<div id="username" style="background-color:#999999; padding:1% 0 1% 0; position:absolute; top:8px; left:950px;"></div>
+<div id="userID" class="hide"></div>
+<div id="usern" class="hide"></div>
+<form action="/home">
+    <input type="submit" value="Home" style="position:absolute; top:8px; left:1150px; width:100; height:43"></input>
+</form>
+<form id="form1">
+    <input type="submit" value="Logout" onclick="logout()" style="position:absolute; top:8px; left:1258px; width:100; height:43"></input>
+</form>

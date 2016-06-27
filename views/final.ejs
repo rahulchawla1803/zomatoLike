@@ -1,0 +1,54 @@
+<html>
+<body>
+<%- include header.ejs %>
+<form id="form5">
+<h2>Select an address</h2>
+    <%for(var i=0;i<count;i++){ %>
+    <input type="radio" name="addr"><div name="p"><%=doc[0].address[i]%></div></input><br>
+    <%}%>
+
+<br>
+<div id="order" style="background-color:#999999; padding:1% 0 1% 0;">
+<b>Restaurant Name:</b><p id="rt"><%=restName%></p>
+<br>
+<b>Order:</b><p id="od"><%=order%></p>
+</div>
+    <br>
+    <input type="hidden" id="addrSel" name="addrSel"></input>
+    <input type="hidden" id="restName" name="restName"></input>
+    <input type="hidden" id="orderPlaced" name="orderPlaced"></input>
+<input type="submit" onclick="order()" value="Order" style="width:100; height:50"/>
+</form>
+<br>
+<h2>Scrap the order</h2>
+<form action="/home">
+    <input type="submit" value="Scrap" style="width:100; height:50"/>
+</form>
+<script>
+    function order()
+    {
+//        console.log("Hello from order");
+        var nodes=document.getElementsByName('addr');
+        var p=document.getElementsByName('p');
+        for(i=0;i<nodes.length;i++)
+        {
+            p[i].id=i;
+            if(nodes[i].checked)
+                    break;
+        }
+        var addrSel=p[i].innerHTML;
+        document.getElementById('addrSel').value=addrSel;
+
+        var restName=document.getElementById('rt').innerHTML;
+        document.getElementById('restName').value=restName;
+        var orderPlaced=document.getElementById('od').innerHTML;
+        document.getElementById('orderPlaced').value=orderPlaced;
+
+        document.getElementById('form5').action = "/waiting";
+        document.getElementById('form5').submit();
+
+    }
+</script>
+</body>
+</html>
+

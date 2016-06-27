@@ -1,0 +1,59 @@
+<html>
+<style>
+    .hide1 {display:none;}
+</style>
+<body>
+<%- include header.ejs %>
+<div>
+    <h1>SAVED ADDRESS</h1>
+    <div id="status" style="background-color:#999999; padding:1% 0 1% 0;">
+        <%if(count==0){%>
+        <p>--->No Address Saved</p>
+        <%}%>
+        <%for(var i=0;i<count;i++){ %>
+        <ul>
+            <li><%=doc[0].address[i]%></li>
+        </ul>
+        <%}%>
+    </div>
+</div>
+<br>
+<hr>
+<br>
+<input type="submit" onclick="unhide()" value="Add address" style="width:300px;height:50px;"/>
+<form id="form2">
+    <br>
+    <textarea name="address" class="hide1" rows="5" cols="50"></textarea>
+    <br>
+    <input type="submit" onclick="add()" class="hide1" value="ADD">
+    <input type="hidden" id="usID" name="usID"></input>
+    <input type="hidden" id="usname" name="usname"></input>
+</form>
+<script>
+    function unhide()
+    {
+
+        var hiden=document.getElementsByClassName('hide1');
+        hiden[0].className="";
+        hiden[0].className="";
+    }
+    function add()
+    {
+        var userID=document.getElementById('userID').innerHTML;
+        var username=document.getElementById('usern').innerHTML;
+        document.getElementById('usID').value=userID;
+        document.getElementById('usname').value=username;
+
+        /*
+        1. value of name in the <input> forms a component in the link later which is posted and not the value of id.
+        2. Thus mentioning name is mandatory.
+        3. You can either access the <input> tag by document.getElementById('') or document.getElementsByName('')[0]
+
+
+        */
+        document.getElementById('form2').action = "/addAddr";
+        document.getElementById('form2').submit();
+    }
+</script>
+</body>
+</html>
